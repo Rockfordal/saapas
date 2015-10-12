@@ -3,6 +3,7 @@
   :resource-paths #{"src/clj" "src/cljc"}
   :dependencies '[[org.clojure/clojure    "1.7.0"]
                   [org.clojure/clojurescript "1.7.48"]
+                  [com.taoensso/timbre "4.1.1"]
 
                   [adzerk/boot-cljs       "1.7.48-5"   :scope "test"]
                   [adzerk/boot-cljs-repl  "0.2.0"      :scope "test"]
@@ -20,13 +21,25 @@
                   [prismatic/om-tools "0.4.0"]
                   [prismatic/plumbing "0.5.0"]
                   [prismatic/schema "1.0.1"]
+                  [ring/ring-defaults "0.1.5"]
                   [ring "1.4.0"]
                   [compojure "1.4.0"]
+                  [org.clojure/algo.generic "0.1.2" :only [fmap]] ; massera data
+                  [com.datomic/datomic-pro "0.9.5206" :exclusions [joda-time]]
+                  [datomic-schema "1.3.0"]
                   [hiccup "1.0.5"]
+
+                  ; Both
+                  [com.taoensso/sente "1.6.0" :exclusions [org.clojure/tools.reader]]
+                  [com.cognitect/transit-clj  "0.8.281" :exclusions [commons-codec]]
+                  [com.cognitect/transit-cljs "0.8.225"]
+                  [fogus/ring-edn "0.3.0"]
+                  ;[com.cemerick/friend "0.2.2-SNAPSHOT"]
 
                   ; Frontend
                   [org.omcljs/om "0.8.8"]
                   [sablono "0.3.6"]
+                  [prismatic/schema "1.0.1"]
 
                   ; LESS
                   [org.webjars/bootstrap "3.3.4"]
@@ -68,15 +81,12 @@
       (less))
     (reload :open-file "vim --servername saapas --remote-silent +norm%sG%s| %s"
             :ids #{"js/main"})
-    ; This starts a repl server with piggieback middleware
-    (cljs-repl :ids #{"main"})
+    (cljs-repl :ids #{"main"} :port 7888)
     (cljs :ids #{"js/main"})
     (start-app :port port)
     (if speak (boot.task.built-in/speak) identity)))
 
-(deftask package
-  "Build the package"
-  []
+(deftask package []
   (comp
     (less :compression true)
     (cljs :optimizations :advanced)

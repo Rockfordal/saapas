@@ -3,6 +3,7 @@
     [hiccup.core :refer [html]]
     [hiccup.page :refer [html5 include-js include-css]]))
 
+
 (def index-page
   (html
     (html5
@@ -22,5 +23,7 @@
       [:head
        [:title "Saapas tests"]]
       [:body
+       [:h1 "Testar"]
        [:div.container [:div#app.app-wrapper]]
-       (include-js "js/test.js")])))
+       ;(include-js "js/test.js")
+       ])))

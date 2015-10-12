@@ -7,3 +7,4 @@
   (is (= 2 (+ 1 1)) "1+1 is 2"))
 
 (test/run-all-tests #"^frontend.*-test$")
+

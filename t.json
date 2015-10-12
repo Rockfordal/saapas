@@ -1,0 +1,60 @@
+//Bucket Copy Policy for destination user
+{"Version": "2012-10-17",
+  "Statement": [{
+      "Effect": "Allow",
+      "Action": ["s3:ListAllMyBuckets"],
+      "Resource": "arn:aws:s3:::*"
+    }, {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject",
+                 "s3:DeleteObject"],
+      "Resource": ["arn:aws:s3:::from-destination/*"]
+    }, {
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket",
+                 "s3:GetBucketLocation"],
+      "Resource": ["arn:aws:s3:::from-destination"]}]}
+
+
+// Policy for source bucket
+{"Version": "2012-10-17",
+ "Statement": [{"Sid": "AllowAll",
+                "Effect": "Allow",
+                "Principal": {
+                  "AWS": ["arn:aws:iam::311897268478:user/urkraftwp"]},
+     "Action":   ["s3:*"],
+     "Resource": ["arn:aws:s3:::ur-wpbackup",
+                  "arn:aws:s3:::ur-wpbackup/*"]}]}
+
+
+// Policy for user to access destionation bucket
+{"Version": "2012-10-17",
+  "Statement": [{
+         "Effect":   "Allow",
+         "Action":  ["s3:ListAllMyBuckets"],
+         "Resource": "arn:aws:s3:::*"
+      }, {
+         "Effect":  "Allow",
+         "Action": ["s3:GetObject",
+                    "s3:PutObject"],
+         "Resource":["arn:aws:s3:::ur-wpbackup/*",
+                     "arn:aws:s3:::urkraft-wpbackup/*"]
+      }, {
+         "Effect":  "Allow",
+         "Action": ["s3:ListBucket",
+                    "s3:GetBucketLocation"],
+         "Resource": ["arn:aws:s3:::ur-wpbackup",
+                      "arn:aws:s3:::urkraft-wpbackup"]}]}
+
+
+// Policy Destionationbucket
+{"Version": "2012-10-17",
+ "Statement": [{
+     "Sid": "AllowAll",
+     "Effect": "Allow",
+     "Principal": {
+       "AWS": ["arn:aws:iam::311897268478:user/urkraftwp"]   
+   },
+     "Action": ["s3:*"],
+     "Resource": ["arn:aws:s3:::urkraft-wpbackup",
+                  "arn:aws:s3:::urkraft-wpbackup/*"]}]}

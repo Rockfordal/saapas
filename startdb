@@ -1,0 +1,2 @@
+/opt/datomic/bin/transactor -Xms128m -Xmx128m  /opt/datomic/lowmem-transactor.properties
+
