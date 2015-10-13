@@ -26,7 +26,7 @@
 ;;    ])
 
 (defn wstest []
-  (let [kuk "snopp"]
+  (let [apa "olle"]
     (dom/div
       (dom/h3 "Kanal test")
       (dom/button {:on-click #(test-socket-callback)} "Testa"))))
