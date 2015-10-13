@@ -1,5 +1,5 @@
 (ns components.datomic
-  (:require [com.stuartsierra.component :as component]
+  (:require [com.stuartsierra.component :refer [Lifecycle using]]
             [taoensso.timbre :refer (tracef debugf infof warnf errorf)]
             [backend.dbschema :refer [get-schema]]
             [datomic.api :as d]))
