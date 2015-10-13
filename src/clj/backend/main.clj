@@ -6,7 +6,7 @@
 (defn init
   ([] (init nil))
   ([opts]
-    (require 'backend.system)
+    (require  'backend.system)
     ((resolve 'backend.system/new-system) opts)))
 
 (defn setup-app! [opts]
