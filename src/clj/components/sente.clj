@@ -1,25 +1,26 @@
 (ns components.sente
-  (:require [com.stuartsierra.component :as component]
+  (:require [com.stuartsierra.component :refer [Lifecycle using]]
+            [taoensso.timbre :refer (tracef debugf infof warnf errorf)]
             [taoensso.sente :as sente]))
 
 (defrecord ChannelSockets [ring-ajax-post ring-ajax-get-or-ws-handshake ch-chsk chsk-send! connected-uids router server-adapter event-msg-handler options]
-  component/Lifecycle
-  (start [component]
+  Lifecycle
+  (start [self]
     (let [{:keys [ch-recv send-fn ajax-post-fn ajax-get-or-ws-handshake-fn connected-uids]}
           (sente/make-channel-socket! server-adapter options)]
-      (println (str "Starting sente"))
-      (assoc component
+      (debugf "Starting sente")
+      (assoc self
         :ring-ajax-post ajax-post-fn
         :ring-ajax-get-or-ws-handshake ajax-get-or-ws-handshake-fn
-        :ch-chsk ch-recv
+        :ch-chsk    ch-recv
         :chsk-send! send-fn
         :connected-uids connected-uids
         :router (atom (sente/start-chsk-router! ch-recv event-msg-handler)))))
-  (stop [component]
+  (stop [self]
     (if-let [stop-f @router]
-      (do (println (str "Stopping sente"))
-          (assoc component :router (stop-f)))
-      component)))
+      (do (debugf "Stopping sente")
+          (assoc self :router (stop-f)))
+      self)))
 
 (defn new-channel-sockets
   ([event-msg-handler server-adapter]
@@ -33,28 +34,28 @@
 ;; (defrecord WSRingHandlers [ajax-post-fn ajax-get-or-ws-handshake-fn])
 
 ;; (defrecord WSConnection [ch-recv connected-uids send-fn ring-handlers]
-;;   component/Lifecycle
-;;   (start [component]
+;;   Lifecycle
+;;   (start [self]
 ;;     (if (and ch-recv connected-uids send-fn ring-handlers)
-;;       component
-;;       (let [component (component/stop component)
+;;       self
+;;       (let [self (component/stop self)
 ;;             packer (get-flexi-packer :edn)
 ;;             {:keys [ch-recv send-fn connected-uids
 ;;                     ajax-post-fn ajax-get-or-ws-handshake-fn]}
 ;;             (sente/make-channel-socket! sente-http/http-kit-adapter {:packer packer})]
 ;;         (log/debug "WebSocket anslutning startad")
-;;         (assoc component
+;;         (assoc self
 ;;           :ch-recv ch-recv
 ;;           :connected-uids connected-uids
 ;;           :send-fn send-fn
 ;;           :stop-the-thing (sente/start-chsk-router! ch-recv event-msg-handler*)
 ;;           :ring-handlers
 ;;           (->WSRingHandlers ajax-post-fn ajax-get-or-ws-handshake-fn)))))
-;;   (stop [component]
+;;   (stop [self]
 ;;     (when ch-recv (async/close! ch-recv))
 ;;     (log/debug "WebSocket anslutning stoppad")
-;;     (:stop-the-thing component)
-;;     (assoc component
+;;     (:stop-the-thing self)
+;;     (assoc self
 ;;       :ch-recv nil :connected-uids nil :send-fn nil :ring-handlers nil)))
 
 ;; (defn send! [ws-conn user-id event]

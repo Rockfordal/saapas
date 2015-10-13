@@ -1,19 +1,19 @@
 ;; (ns system.components.rabbitmq
-;;   (:require [com.stuartsierra.component :as component]
+;;   (:require [com.stuartsierra.component :refer [Lifecycle using]]
 ;;             [environ.core :refer [env]]
 ;;             [langohr.core      :as rmq]
 ;;             [langohr.channel   :as lch]))
 
 ;; (defrecord Rabbit [uri conn ch]
-;;   component/Lifecycle
-;;   (start [component]
+;;   Lifecycle
+;;   (start [self]
 ;;     (let [conn (rmq/connect {:uri uri})
 ;;           ch   (lch/open conn)]
-;;       (assoc component :conn conn :ch ch)))
-;;   (stop [component]
+;;       (assoc self :conn conn :ch ch)))
+;;   (stop [self]
 ;;     (rmq/close ch)
 ;;     (rmq/close conn)
-;;     component))
+;;     self))
 
 ;; (defn new-rabbit-mq [uri]
 ;;   (map->Rabbit {:uri uri}))

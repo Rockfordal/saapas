@@ -1,14 +1,13 @@
 (ns components.httpkit
-  (:require [com.stuartsierra.component :as component]
-            ;[taoensso.timbre :as timbre :refer (tracef debugf infof warnf errorf)]
+  (:require [com.stuartsierra.component :refer [Lifecycle using]]
+            [taoensso.timbre :refer [tracef debugf infof warnf errorf]]
             [org.httpkit.server :refer [run-server]]))
 
-
 (defrecord HttpKit [port reload reload-dirs handler]
-  component/Lifecycle
+  Lifecycle
   (start [this]
     (let [port (or port 3000)]
-      (println (str "Starting web server on http://localhost:" port))
+      (debugf (str "Starting web server on http://localhost:" port))
       (assoc this
              :http-kit
              (run-server handler
@@ -19,5 +18,7 @@
       (http-kit))
     (assoc this :http-kit nil)))
 
-(defn new-web-server [opts]
+(defn new-httpkit [opts]
+  ;; (using
   (map->HttpKit opts))
+  ;[:sente])

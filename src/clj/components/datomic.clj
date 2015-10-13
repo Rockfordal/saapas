@@ -1,11 +1,11 @@
 (ns components.datomic
   (:require [com.stuartsierra.component :as component]
-            [taoensso.timbre :as timbre :refer (tracef debugf infof warnf errorf)]
+            [taoensso.timbre :refer (tracef debugf infof warnf errorf)]
             [backend.dbschema :refer [get-schema]]
             [datomic.api :as d]))
 
 (defrecord Datomic [host conn]
-  component/Lifecycle
+  Lifecycle
   (start [this]
     (let [db   (d/create-database host)
           conn (d/connect host)]
@@ -17,5 +17,5 @@
     (d/release conn)
     (assoc this :conn nil)))
 
-(defn new-datomic [host]
-  (map->Datomic {:host host}))
+(defn new-datomic [dbhost]
+  (map->Datomic {:host dbhost}))

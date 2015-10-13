@@ -1,21 +1,21 @@
 ;; (ns components.elasticsearch
-;;   (:require [com.stuartsierra.component :as component])
+;;   (:require [com.stuartsierra.component :refer [Lifecycle using]])
 ;;   (:import [org.elasticsearch.client.transport TransportClient]
 ;;            [org.elasticsearch.common.transport InetSocketTransportAddress]
 ;;            [org.elasticsearch.common.settings ImmutableSettings]))
 
 ;; (defrecord Elasticsearch [addresses settings client]
-;;   component/Lifecycle
-;;   (start [component]
+;;   Lifecycle
+;;   (start [self]
 ;;     (let [builder (.. (ImmutableSettings/settingsBuilder)
 ;;                       (put ^java.util.Map settings))
 ;;           client (doto (TransportClient. builder)
 ;;                    (.addTransportAddresses (into-array addresses)))]
-;;       (assoc component :client client)))
-;;   (stop [component]
+;;       (assoc self :client client)))
+;;   (stop [self]
 ;;     (when client
 ;;       (.close ^TransportClient client))
-;;     (assoc component :client nil)))
+;;     (assoc self :client nil)))
 
 ;; (defn new-elasticsearch-db
 ;;   ([addresses]
