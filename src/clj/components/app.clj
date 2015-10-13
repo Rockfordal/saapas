@@ -1,15 +1,15 @@
 (ns components.app
-  (:require [com.stuartsierra.component :as component]
-            [taoensso.timbre :as timbre :refer (tracef debugf infof warnf errorf)]))
+  (:require [com.stuartsierra.component :refer [Lifecycle using]]
+            [taoensso.timbre :refer (tracef debugf infof warnf errorf)]))
 
 (defrecord App []
-  component/Lifecycle
-  (start [component]
+  Lifecycle
+  (start [self]
     (debugf "App logik startad")
-    component)
-  (stop [component]
+    self)
+  (stop [self]
     (debugf "App logik stoppad")
-    component))
+    self))
 
 (defn new-app []
   (map->App {}))
