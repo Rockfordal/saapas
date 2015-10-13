@@ -10,7 +10,7 @@
       (debugf (str "Starting web server on http://localhost:" port))
       (assoc this
              :http-kit
-             (run-server handler
+             (run-server (handler nil)
                {:port port
                 :join? false}))))
   (stop [this]
