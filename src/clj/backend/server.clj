@@ -54,6 +54,10 @@
       ;(wrap-resource "/META-INF/resources")
       (wrap-edn-params))))
 
+
+; Exempel på hur man skulle kunna göra istället:
+; Men har inte hunnit sätta mig in i det än
+; så jag förstår inte exakt hur dom menar.
 (comment
   (defroutes ...)
 
@@ -63,14 +67,4 @@
 
   (-> routes
     (wrap-app-component web-app))
-
-   ;http-kit
-   (run-server (make-handler web-app))
-
-   (defn web-server []
-     (component/using (map->WebServer {})
-       [:web-app]))
   )
-
-(def app
-  (make-handler nil))
