@@ -19,6 +19,7 @@
     (assoc this :http-kit nil)))
 
 (defn new-httpkit [opts]
-  ;; (using
+  ; (using
   (map->HttpKit opts))
   ;[:sente])
+  ;[:web-app]
