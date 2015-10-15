@@ -14,7 +14,8 @@
       (assoc this :conn conn)))
   (stop [this]
     (infof "Datomic nerkopplad")
-    (d/release conn)
+    ;(d/release conn)
+    (d/shutdown false)
     (assoc this :conn nil)))
 
 (defn new-datomic [dbhost]
