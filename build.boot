@@ -5,12 +5,12 @@
                   [org.clojure/clojurescript "1.7.48"]
                   [com.taoensso/timbre "4.1.1"]
 
-                  [adzerk/boot-cljs       "1.7.48-5"   :scope "test"]
-                  [adzerk/boot-cljs-repl  "0.2.0"      :scope "test"]
-                  [adzerk/boot-reload     "0.4.0"      :scope "test"]
-                  [deraen/boot-less       "0.4.2"      :scope "test"]
-                  [deraen/boot-sass       "0.1.1"      :scope "test"]
-                  [deraen/boot-ctn        "0.1.0"      :scope "test"]
+                  [adzerk/boot-cljs       "1.7.48-5" :scope "test"]
+                  [adzerk/boot-cljs-repl  "0.2.0"    :scope "test"]
+                  [adzerk/boot-reload     "0.4.0"    :scope "test"]
+                  [deraen/boot-less       "0.4.2"    :scope "test"]
+                  [deraen/boot-sass       "0.1.1"    :scope "test"]
+                  [deraen/boot-ctn        "0.1.0"    :scope "test"]
 
                   ; Backend
                   [http-kit "2.1.19"]
@@ -28,15 +28,15 @@
                   [com.datomic/datomic-pro "0.9.5206" :exclusions [joda-time]]
                   [datomic-schema "1.3.0"]
                   [hiccup "1.0.5"]
-
-                  ; Both
-                  [com.taoensso/sente "1.6.0" :exclusions [org.clojure/tools.reader]]
                   [com.cognitect/transit-clj  "0.8.281" :exclusions [commons-codec]]
-                  [com.cognitect/transit-cljs "0.8.225"]
                   [fogus/ring-edn "0.3.0"]
                   ;[com.cemerick/friend "0.2.2-SNAPSHOT"]
 
+                  ; Both
+                  [com.taoensso/sente "1.6.0" :exclusions [org.clojure/tools.reader]]
+
                   ; Frontend
+                  [com.cognitect/transit-cljs "0.8.225"]
                   [org.omcljs/om "0.8.8"]
                   [sablono "0.3.6"]
                   [prismatic/schema "1.0.1"]
