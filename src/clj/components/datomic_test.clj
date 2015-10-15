@@ -1,8 +1,8 @@
 (ns components.datomic-test
   (:require [components.datomic :refer [new-datomic-db]]
-   [com.stuartsierra.component :as component]
-   [datomic.api :as d]
-   [clojure.test :refer [deftest testing is]]))
+            [com.stuartsierra.component :as component]
+            [datomic.api :as d]
+            [clojure.test :refer [deftest testing is]]))
 
 (def uri "datomic:mem://localhost:4334/framework-test")
 (def datomic-db (new-datomic-db uri))

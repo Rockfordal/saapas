@@ -50,7 +50,7 @@
 
   (system-map
     :customers (customers)
-    :email (->Email))
+    :email     (->Email))
 
   (defn vanlig [config]
     (let [{:keys [port dburi]} config]
