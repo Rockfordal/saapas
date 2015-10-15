@@ -8,14 +8,14 @@
             [components.httpkit :refer [new-httpkit]]
             [components.app     :refer [new-app]]
             [backend.ws         :refer [event-msg-handler*]]
-            [backend.server     :refer [app make-handler]]))
+            [backend.server     :refer [make-handler]]))
 
 (def dbhost "datomic:dev://localhost:4334/frejm")
 (def ednpacker (sente-transit/get-flexi-packer :edn))
 (def httpopts  {:handler make-handler})
 (def senteopts {:packer ednpacker
-                :handler #'app
-               })
+                ;:handler #'app
+                })
 
 (defn new-sente []
   (new-channel-sockets event-msg-handler* sente-web-server-adapter senteopts))
@@ -23,9 +23,10 @@
 (defn new-system [opts]
   (component/system-map
     :datomic (new-datomic dbhost)
+    :routes  (new-routes)
     :sente   (new-sente)
     :httpkit (new-httpkit httpopts)
-    :app     (new-app)))
+    :app     (new-app {:msg "Hej"})))
 
 
 (comment

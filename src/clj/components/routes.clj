@@ -5,13 +5,13 @@
 (defrecord Routes [datomic]
   Lifecycle
   (start [self]
-    (debugf (str "Routing startad " (:msg self)))
-     self)
+    (debugf (str "Routing startad "))
+    self)
   (stop [self]
     (debugf "Routing stoppad")
-     self))
+    self))
 
-(defn new-routes [msg]
+(defn new-routes []
   (using
-    (map->Routes {:msg msg})
+    (map->Routes {})
     [:datomic]))

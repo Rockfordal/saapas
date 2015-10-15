@@ -5,11 +5,11 @@
 (defrecord App []
   Lifecycle
   (start [self]
-    (debugf "App logik startad")
+    (debugf (str "Saapas startad " (:msg self)))
     self)
   (stop [self]
     (debugf "App logik stoppad")
     self))
 
-(defn new-app []
-  (map->App {}))
+(defn new-app [msg]
+  (map->App {:msg msg}))
