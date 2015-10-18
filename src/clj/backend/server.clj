@@ -31,13 +31,8 @@
         datomic (:datomic webapp)
         conn    (:conn datomic)]
     (if conn
-      (str
-        "Ja vi har conn! \n"
-        conn
-        )
-      "Nej vi har inte conn")
-  ;"Mja"
-  ))
+      (str "Ja vi har conn! <br/>" conn)
+           "Nej vi har inte conn")))
 
 ;; (defn ednstate [db]
 ;;   (edn-res (get-state db)))
