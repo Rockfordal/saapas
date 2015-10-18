@@ -12,10 +12,8 @@
 
 (def dbhost "datomic:dev://localhost:4334/frejm")
 (def ednpacker (sente-transit/get-flexi-packer :edn))
-(def httpopts  {:handler make-handler})
-(def senteopts {:packer ednpacker
-                ;:handler #'app
-                })
+(def httpopts  {:make-handler make-handler})
+(def senteopts {:packer ednpacker})
 
 (defn new-sente []
   (new-channel-sockets event-msg-handler* sente-web-server-adapter senteopts))
