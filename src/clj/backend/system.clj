@@ -6,7 +6,7 @@
             [components.sente   :refer [new-channel-sockets]]
             [components.routes  :refer [new-routes]]
             [components.httpkit :refer [new-httpkit]]
-            [components.app     :refer [new-app]]
+            [components.app     :refer [new-webapp]]
             [backend.ws         :refer [event-msg-handler*]]
             [backend.server     :refer [make-handler]]))
 
@@ -26,7 +26,7 @@
     :routes  (new-routes)
     :sente   (new-sente)
     :httpkit (new-httpkit httpopts)
-    :app     (new-app {:msg "Hej"})))
+    :webapp  (new-webapp "Hej")))
 
 
 (comment
