@@ -6,7 +6,7 @@
             [ring.util.response :refer [redirect]]
             [ring.util.http-response :refer :all]
             [ring.middleware.reload :refer [wrap-reload]]
-            ;[ring.middleware.resource :refer (wrap-resource)]
+            [ring.middleware.resource :refer (wrap-resource)]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
             [reloaded.repl :refer [system]]
             [backend.db :refer [get-state]]
@@ -20,34 +20,30 @@
    :headers {"Content-Type" "application/edn"}
    :body (pr-str data)})
 
-(defn ednstate [db]
-  (edn-res (get-state db)))
+(defn ednstate [datomic]
+  (edn-res (get-state datomic)))
 
 (defn testwebapp [req]
   (let [webapp  (::webapp req)
         datomic (:datomic webapp)
         conn    (:conn datomic)]
-    (if conn
-      (str "Ja vi har conn! <br/>" conn)
-           "Nej vi har inte conn")))
+    (if conn (ednstate datomic)
+             "conn saknas")))
 
 (defroutes routes
   (resources "/js"  {:root "js"})
   (resources "/css" {:root "css"})
-  (GET "/"      [] (-> (ok index-page) (texthtml)))
-  (GET "/hello" [] (-> (ok test-page)  (texthtml)))
-  ;(GET  "/chsk" req ((:ring-ajax-get-or-ws-handshake (:sente system)) req))
-  ;(POST "/chsk" req ((:ring-ajax-post (:sente system)) req))
-  (GET "/test" req (-> (ok (testwebapp req)) (texthtml)))
-
-  ;(if (nil? db)
-  ;  (GET "/getstate" _ (-> (ok "getstate nil") (texthtml)))
-  ;  (GET "/getstate" _ (ednstate)))
+  (GET "/"      []  (-> (ok index-page) (texthtml)))
+  (GET "/hello" []  (-> (ok test-page)  (texthtml)))
+  (GET "/test"  req (-> (ok (testwebapp req)) (texthtml)))
+  (GET  "/chsk" req ((:ring-ajax-get-or-ws-handshake (:sente (::webapp req))) req))
+  (POST "/chsk" req ((:ring-ajax-post (:sente (::webapp req))) req))
   (route/not-found "<h1>Sidan kan inte hittas</h1>"))
 
 (defn wrap-app-component [f webapp]
   (fn [req]
-    (f (assoc req ::webapp webapp))))
+    (f
+      (assoc req ::webapp webapp))))
 
 (defn make-handler [web-app]
   (let [ring-defaults-config
@@ -56,7 +52,7 @@
                     {:read-token (fn [req] (-> req :params :csrf-token))})
           (assoc-in [:static :resources] "public"))]
   (-> routes
-      ;(wrap-defaults ring-defaults-config) ; site-defaults
-      ;(wrap-resource "/META-INF/resources")
+      (wrap-defaults ring-defaults-config)
+      (wrap-resource "/META-INF/resources")
       (wrap-edn-params)
       (wrap-app-component web-app))))
