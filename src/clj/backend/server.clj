@@ -42,11 +42,10 @@
 (defroutes routes
   (resources "/js"  {:root "js"})
   (resources "/css" {:root "css"})
-  (GET "/"     [] (-> (ok index-page) (texthtml)))
+  (GET "/"      [] (-> (ok index-page) (texthtml)))
   (GET "/hello" [] (-> (ok test-page)  (texthtml)))
   ;(GET  "/chsk" req ((:ring-ajax-get-or-ws-handshake (:sente system)) req))
   ;(POST "/chsk" req ((:ring-ajax-post (:sente system)) req))
-  ;(GET "/test" req (testwebapp req))
   (GET "/test" req (-> (ok (testwebapp req)) (texthtml)))
 
   ;(if (nil? db)
