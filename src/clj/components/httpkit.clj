@@ -3,7 +3,7 @@
             [taoensso.timbre :refer [tracef debugf infof warnf errorf]]
             [org.httpkit.server :refer [run-server]]))
 
-(defrecord HttpKit [port reload reload-dirs handler]
+(defrecord HttpKit [port make-handler]
   Lifecycle
   (start [this]
     (let [port (or port 3000)]
