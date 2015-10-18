@@ -1,4 +1,4 @@
-(ns components.app
+(ns components.webapp
   (:require [com.stuartsierra.component :refer [Lifecycle using]]
             [taoensso.timbre :refer (tracef debugf infof warnf errorf)]))
 
@@ -14,7 +14,7 @@
 (defn new-webapp [msg]
   (using
     (map->Webapp {:msg msg})
-    [:datomic]))
+    [:datomic :sente]))
 
 
 
