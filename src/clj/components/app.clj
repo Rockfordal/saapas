@@ -12,7 +12,9 @@
     this))
 
 (defn new-webapp [msg]
-  (map->Webapp {:msg msg}))
+  (using
+    (map->Webapp {:msg msg})
+    [:datomic]))
 
 
 
