@@ -26,6 +26,9 @@
    :headers {"Content-Type" "application/edn"}
    :body (pr-str data)})
 
+(defn ednstate [db]
+  (edn-res (get-state db)))
+
 (defn testwebapp [req]
   (let [webapp  (::webapp req)
         datomic (:datomic webapp)
@@ -33,9 +36,6 @@
     (if conn
       (str "Ja vi har conn! <br/>" conn)
            "Nej vi har inte conn")))
-
-;; (defn ednstate [db]
-;;   (edn-res (get-state db)))
 
 ;; (defn myroutes [db]
 ;;   (cj/routes
