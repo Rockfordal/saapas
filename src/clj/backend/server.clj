@@ -26,45 +26,56 @@
    :headers {"Content-Type" "application/edn"}
    :body (pr-str data)})
 
-(defn ednstate [db]
-  (edn-res (get-state db)))
+(defn testwebapp [req]
+  (let [webapp  (::webapp req)
+        datomic (:datomic webapp)
+        conn    (:conn datomic)]
+    (if conn
+      (str
+        "Ja vi har conn! \n"
+        conn
+        )
+      "Nej vi har inte conn")
+  ;"Mja"
+  ))
 
-(defn myroutes [db]
-  (cj/routes
-      (resources "/js"  {:root "js"})
-      (resources "/css" {:root "css"})
-      (GET "/"     [] (-> (ok index-page) (texthtml)))
-      (GET "/test" [] (-> (ok test-page)  (texthtml)))
-      (GET  "/chsk" req ((:ring-ajax-get-or-ws-handshake (:sente system)) req))
-      (POST "/chsk" req ((:ring-ajax-post (:sente system)) req))
-      (if (nil? db)
-        (GET "/getstate" _ (-> (ok "getstate nil") (texthtml)))
-        (GET "/getstate" _ (ednstate)))
-      (route/not-found "<h1>Sidan kan inte hittas</h1>")))
+;; (defn ednstate [db]
+;;   (edn-res (get-state db)))
 
-(defn make-handler [db]
+;; (defn myroutes [db]
+;;   (cj/routes
+(defroutes routes
+  (resources "/js"  {:root "js"})
+  (resources "/css" {:root "css"})
+  (GET "/"     [] (-> (ok index-page) (texthtml)))
+  (GET "/hello" [] (-> (ok test-page)  (texthtml)))
+  ;(GET  "/chsk" req ((:ring-ajax-get-or-ws-handshake (:sente system)) req))
+  ;(POST "/chsk" req ((:ring-ajax-post (:sente system)) req))
+  ;(GET "/test" req (testwebapp req))
+  (GET "/test" req (-> (ok (testwebapp req)) (texthtml)))
+
+  ;(if (nil? db)
+  ;  (GET "/getstate" _ (-> (ok "getstate nil") (texthtml)))
+  ;  (GET "/getstate" _ (ednstate)))
+  (route/not-found "<h1>Sidan kan inte hittas</h1>"))
+
+(defn wrap-app-component [f webapp]
+  (fn [req]
+    (f (assoc req ::webapp webapp))))
+
+(defn make-handler [web-app]
   (let [ring-defaults-config
         (-> site-defaults
           (assoc-in [:security :anti-forgery]
                     {:read-token (fn [req] (-> req :params :csrf-token))})
           (assoc-in [:static :resources] "public"))]
-  (-> (myroutes db)
-      (wrap-defaults site-defaults)
-      ;(wrap-dir-index)
-      ;(wrap-resource "/META-INF/resources")
-      (wrap-edn-params))))
-
-
-; Exempel på hur man skulle kunna göra istället:
-; Men har inte hunnit sätta mig in i det än
-; så jag förstår inte exakt hur dom menar.
-(comment
-  (defroutes ...)
-
-  (defn wrap-app-component [f web-app]
-    (fn [req]
-      (f (assoc req ::web-app web-app))))
-
   (-> routes
-    (wrap-app-component web-app))
-  )
+      ;(wrap-defaults ring-defaults-config) ; site-defaults
+      ;(wrap-resource "/META-INF/resources")
+      ;(wrap-dir-index)
+      (wrap-edn-params)
+      (wrap-app-component web-app)
+    )))
+
+;; (defn make-handler [db]
+;;   (-> (myroutes db))))
