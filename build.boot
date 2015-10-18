@@ -2,7 +2,7 @@
   :source-paths #{"src/cljs" "src/less" "src/scss"}
   :resource-paths #{"src/clj" "src/cljc"}
   :dependencies '[[org.clojure/clojure    "1.7.0"]
-                  [org.clojure/clojurescript "1.7.48"]
+                  [org.clojure/clojurescript "1.7.145"] ; 1.7.48 ; .145
                   [com.taoensso/timbre "4.1.1"]
 
                   [adzerk/boot-cljs       "1.7.48-5" :scope "test"]
@@ -28,11 +28,12 @@
                   [com.datomic/datomic-pro "0.9.5206" :exclusions [joda-time]]
                   [datomic-schema "1.3.0"]
                   [hiccup "1.0.5"]
-                  [com.cognitect/transit-clj  "0.8.281" :exclusions [commons-codec]]
+                  [com.cognitect/transit-clj  "0.8.283" :exclusions [commons-codec]] ; 0.8.283
                   [fogus/ring-edn "0.3.0"]
                   ;[com.cemerick/friend "0.2.2-SNAPSHOT"]
 
                   ; Both
+                  ;[bidi "1.21.1"]
                   [com.taoensso/sente "1.6.0" :exclusions [org.clojure/tools.reader]]
 
                   ; Frontend
@@ -40,6 +41,14 @@
                   [org.omcljs/om "0.8.8"]
                   [sablono "0.3.6"]
                   [prismatic/schema "1.0.1"]
+
+                  [rum "0.5.0"] ; Sablono 0.3.6 men senaste är 0.3.7-SNAPSHOT 
+                  [datascript "0.13.1"]
+                  [secretary "1.2.3"]
+                  [prismatic/schema "1.0.1"]
+                  [cljs-http "0.1.37"]
+                  [jayq "2.5.4"]
+
 
                   ; LESS
                   [org.webjars/bootstrap "3.3.4"]
