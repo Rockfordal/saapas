@@ -3,7 +3,7 @@
             [taoensso.timbre :refer (tracef debugf infof warnf errorf)]
             [taoensso.sente :as sente]))
 
-(defrecord ChannelSockets [ring-ajax-post ring-ajax-get-or-ws-handshake ch-chsk chsk-send! connected-uids router server-adapter event-msg-handler options]
+(defrecord Sente [ring-ajax-post ring-ajax-get-or-ws-handshake ch-chsk chsk-send! connected-uids router server-adapter event-msg-handler options]
   Lifecycle
   (start [self]
     (let [{:keys [ch-recv send-fn ajax-post-fn ajax-get-or-ws-handshake-fn connected-uids]}
@@ -22,10 +22,10 @@
           (assoc self :router (stop-f)))
       self)))
 
-(defn new-channel-sockets
+(defn new-sente
   ([event-msg-handler server-adapter]
-   (new-channel-sockets event-msg-handler server-adapter {}))
+   (new-sente event-msg-handler server-adapter {}))
   ([event-msg-handler server-adapter options]
-   (map->ChannelSockets {:server-adapter    server-adapter
-                         :event-msg-handler event-msg-handler
-                         :options options})))
+   (map->Sente {:server-adapter    server-adapter
+                :event-msg-handler event-msg-handler
+                :options           options})))
