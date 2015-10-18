@@ -4,7 +4,6 @@
             [taoensso.sente.packers.transit :as sente-transit]
             [components.datomic :refer [new-datomic]]
             [components.sente   :refer [new-channel-sockets]]
-            [components.routes  :refer [new-routes]]
             [components.httpkit :refer [new-httpkit]]
             [components.app     :refer [new-webapp]]
             [backend.ws         :refer [event-msg-handler*]]
@@ -19,21 +18,13 @@
   (new-channel-sockets event-msg-handler* sente-web-server-adapter senteopts))
 
 (defn new-system [opts]
+  ;(let [{:keys [port dburi]} opts]
   (component/system-map
     :datomic (new-datomic dbhost)
-    :routes  (new-routes)
     :sente   (new-sente)
     :httpkit (new-httpkit httpopts)
-    :webapp  (new-webapp "Hej")))
+    :webapp  (new-webapp "hej")))
 
 
-(comment
-  (system-map
-    :customers (customers)
-    :email     (->Email))
-
-  (defn vanlig [config]
-    (let [{:keys [port dburi]} config]
-       :ws-conn     (new-ws)
-       :http-server (using (new-http-server port) [:ws-conn])))
-)
+    ;:customers (customers)
+    ;:email     (->Email)
