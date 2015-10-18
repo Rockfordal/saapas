@@ -30,24 +30,6 @@
 
 
 (comment
-; Service Provider
-
-  ; Encapsulated state
-  (defrecord Email [endpoint api-key])
-
-  ; Public API provides services 
-  (defn send [email address body])
-
-  ; Domain Model
-  (defrecord Customers [db email]) 
-  (def notify [customers name message]
-    (let [{:keys [db email]} customers
-          address (query db .. name)]
-      (send email address message)))
-
-  (defn customers []
-    (using (map->Customers {}) [:db :email]))
-
   (system-map
     :customers (customers)
     :email     (->Email))
