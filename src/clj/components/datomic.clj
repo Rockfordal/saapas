@@ -10,10 +10,10 @@
     (let [db   (d/create-database host)
           conn (d/connect host)]
           (d/transact conn (get-schema))
-          (infof "Datomic ansluten")
+          (debugf "Datomic ansluten")
       (assoc this :conn conn)))
   (stop [this]
-    (infof "Datomic nerkopplad")
+    (debugf "Datomic nerkopplad")
     ;(d/release conn)
     (d/shutdown false)
     (assoc this :conn nil)))

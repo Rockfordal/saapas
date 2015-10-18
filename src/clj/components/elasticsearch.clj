@@ -6,16 +6,16 @@
 
 (defrecord Elasticsearch [addresses settings client]
   Lifecycle
-  (start [self]
+  (start [this]
     (let [builder (.. (ImmutableSettings/settingsBuilder)
                       (put ^java.util.Map settings))
           client (doto (TransportClient. builder)
                    (.addTransportAddresses (into-array addresses)))]
-      (assoc self :client client)))
-  (stop [self]
+      (assoc this :client client)))
+  (stop [this]
     (when client
       (.close ^TransportClient client))
-    (assoc self :client nil)))
+    (assoc this :client nil)))
 
 (defn new-elasticsearch-db
   ([addresses]
