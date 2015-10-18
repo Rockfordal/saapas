@@ -4,9 +4,6 @@
             [reloaded.repl :refer [system]]
             [datomic.api :as d]))
 
-(defn conn [] (:conn (:datomic system)))
-(defn db   [] (d/db (conn)))
-
 (defn create! [m conn]
   (let [dbid (d/tempid :db.part/user)]
     @(d/transact conn (list (assoc m :db/id dbid)))
@@ -48,26 +45,8 @@
 (defn get-by-name [ref name db]
   (d/touch (d/entity db (ffirst (by-name ref name)))))
 
-(defn expand
-  ([e]
-   (if (instance? datomic.query.EntityMap e)
-     (let [m (into {} (d/touch e))]
-       (expand m (keys m)))
-     e))
-  ([e ks]
-   (if-not (empty? ks)
-     (let [val (get e (first ks))]
-       (cond
-         (instance? datomic.query.EntityMap val)
-         (expand (assoc e (first ks) (expand val)) (rest ks))
-         (and (set? val) (instance? datomic.query.EntityMap (first val)))
-         (expand (assoc e (first ks) (set (map expand val))) (rest ks))
-         :else (expand e (rest ks))))
-     e)))
-
 (defn visible-entities [db]
-  (d/q '[:find ?e :in $ %
-         :where (visible ?e)] db
+  (d/q '[:find ?e :in $ % :where (visible ?e)] db
        '[[(visible ?pj) (?pj :project/name)]
          [(visible ?co) (?co :company/name)]
          [(visible ?ac) (?ac :activity/note)]
@@ -87,6 +66,27 @@
                   (instance? datomic.query.EntityMap v) (:db/id v)
                   :else v)) e)))
 
-(defn get-state [db]
-  (map (comp (partial load-entity db) first)
-       (visible-entities db)))
+(defn get-state [{:keys [conn]}]
+  (let [db (d/db conn)]
+    (map (comp (partial load-entity db) first)
+      (visible-entities db))))
+
+;; (defn conn [] (:conn (:datomic system)))
+;; (defn db   [] (d/db (conn)))
+
+;; (defn expand
+;;   ([e]
+;;    (if (instance? datomic.query.EntityMap e)
+;;      (let [m (into {} (d/touch e))]
+;;        (expand m (keys m)))
+;;      e))
+;;   ([e ks]
+;;    (if-not (empty? ks)
+;;      (let [val (get e (first ks))]
+;;        (cond
+;;          (instance? datomic.query.EntityMap val)
+;;          (expand (assoc e (first ks) (expand val)) (rest ks))
+;;          (and (set? val) (instance? datomic.query.EntityMap (first val)))
+;;          (expand (assoc e (first ks) (set (map expand val))) (rest ks))
+;;          :else (expand e (rest ks))))
+;;      e)))
