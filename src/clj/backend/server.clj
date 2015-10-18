@@ -12,12 +12,6 @@
             [backend.db :refer [get-state]]
             [backend.index :refer [index-page test-page]]))
 
-;; (defn wrap-dir-index [handler]
-;;   (fn [req]
-;;     (handler
-;;      (update-in req [:uri]
-;;        #(if (= "/" %) "/index.html" %)))))
-
 (defn texthtml [res]
   (content-type res "text/html"))
 
@@ -37,8 +31,6 @@
       (str "Ja vi har conn! <br/>" conn)
            "Nej vi har inte conn")))
 
-;; (defn myroutes [db]
-;;   (cj/routes
 (defroutes routes
   (resources "/js"  {:root "js"})
   (resources "/css" {:root "css"})
@@ -66,10 +58,5 @@
   (-> routes
       ;(wrap-defaults ring-defaults-config) ; site-defaults
       ;(wrap-resource "/META-INF/resources")
-      ;(wrap-dir-index)
       (wrap-edn-params)
-      (wrap-app-component web-app)
-    )))
-
-;; (defn make-handler [db]
-;;   (-> (myroutes db))))
+      (wrap-app-component web-app))))
